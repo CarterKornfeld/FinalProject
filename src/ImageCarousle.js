@@ -37,6 +37,10 @@ export class ImageCarousle extends LitElement {
   render() {
     return html`
     <div class="backdrop">
+        <div class=body>
+        <div id=text1> askfhaslfhldifhkalchaoshlfasifhkalschalshlishalsfhalsfhlasf.halhsf</div>
+        <media-image></media-image>
+        </div>
     
 
 
