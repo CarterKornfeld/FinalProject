@@ -58,8 +58,12 @@ export class ImageCarousle extends LitElement {
         }
         .displayedImage
         {
-            width: 250px;
-            height: 250px;
+            position: relative;
+           width: 100%;
+           height: 100%;
+            
+        
+
         }
 
         .imageLoop
@@ -70,6 +74,17 @@ export class ImageCarousle extends LitElement {
             position: absolute;
            bottom: 0;
            width: 95%;
+        }
+        .displayedImage
+        #pic
+        {
+            position: absolute;
+            
+            left: 25%;
+            top: 15%;
+            width: 250px;
+            height: 250px;
+            
         }
 
     `;
@@ -98,7 +113,7 @@ export class ImageCarousle extends LitElement {
 
 
     <div class="displayedImage">
-    {}
+    <img id="pic" src= "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg">
     </div>
 
     <div class="imageLoop">
