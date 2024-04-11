@@ -27,6 +27,15 @@
   <h1>images</h1>
   
   <image-carousle></image-carousle>
+  <script>
+    let currentImage = 0;
+    window.addEventListener("DOMContentLoaded", showImage);
+    function showImage() {
+  image.src = images[currentImage];
+  imageNumber.textContent = currentImage + 1;
+  totalImageNumber.textContent = images.length;
+}
+  </script>
 
   <!-- this is what is bringing in the definition for this tag -->
   <script type="module" src="./src/polaris-chip.js"></script>

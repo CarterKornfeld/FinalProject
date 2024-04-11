@@ -10,7 +10,14 @@ export class ImageCarousle extends LitElement {
 
   constructor() {
     super();
-    this.title = "image-carousle";
+    
+  this.image = ["https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
+   "https://images.ctfassets.net/hrltx12pl8hq/a2hkMAaruSQ8haQZ4rBL9/8ff4a6f289b9ca3f4e6474f29793a74a/nature-image-for-website.jpg?fit=fill&w=600&h=400",
+  "https://png.pngtree.com/thumb_back/fh260/background/20240407/pngtree-photo-of-nature-image_15708235.jpg",
+"https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
+"https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"];
+ this.imageNumber = 1;
+ this.totalImageNumber = 5;
   }
 
   static get styles() {
@@ -37,18 +44,13 @@ export class ImageCarousle extends LitElement {
             justify-content: space-between;
             
           }
-        .currentNum
-        {
-            margin: 8px;
-            display: flex;
-            justify-content: left;
-        }
+        
         .closeButton
         {
         margin: 8px;
         
         display: flex;
-            justify-content: right
+        justify-content: right
         }
         .description
         {
@@ -56,15 +58,15 @@ export class ImageCarousle extends LitElement {
             display: flex;
             justify-content: center;
         }
-        .displayedImage
-        {
-            position: relative;
-           width: 100%;
-           height: 100%;
-            
-        
+        .slide-image {
+  width: 100%;
+  min-height: 200px;
+  height: auto;
+  max-height: 400px;
+  padding: 10px;
+  margin: 0 auto;
+}
 
-        }
 
         .imageLoop
         {
@@ -75,7 +77,7 @@ export class ImageCarousle extends LitElement {
            bottom: 0;
            width: 95%;
         }
-        .displayedImage
+      
         #pic
         {
             position: absolute;
@@ -90,16 +92,47 @@ export class ImageCarousle extends LitElement {
     `;
   }
 
+
+
+ rightClick()
+ {
+  console.log("hi")
+  if(this.imageNumber < this.totalImageNumber)
+  this.imageNumber = this.imageNumber+1;
+else
+{
+  this.imageNumber = 1;
+}
+  this.requestUpdate();
+ }
+ leftClick()
+ {
+  if(this.imageNumber > 1)
+  this.imageNumber = this.imageNumber-1;
+else
+{
+  this.imageNumber = this.totalImageNumber;
+}
+  this.requestUpdate();
+ }
+ 
+
+
   render() {
     return html`
     <div class="backdrop">
 
     <div class="topRow">
-
-    <div class="currentNum">
-    1 of 3
+  <p>
+  <div class="slide-image-number"> 
+    ${this.imageNumber}
+    </div> of
+    <div class="total-image-number">
+    ${this.totalImageNumber}
     </div>
-
+  </p>
+    
+    
     <div class="description">
     Cool Pic
     </div>
@@ -112,19 +145,20 @@ export class ImageCarousle extends LitElement {
 
 
 
-    <div class="displayedImage">
-    <img id="pic" src= "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg">
+    <div class="slide-image">
+    <img id="pic" src= ${this.image[this.imageNumber-1]} alt = "slide">
     </div>
 
+
     <div class="imageLoop">
-        <div class="leftButton">
+        <div class="btn backwards" @click="${this.leftClick}">
         <-
         </div>
         <div class = "imageThumbNails">
         [][][][]
         </div>
-        <div class = "rightButton">
-            ->
+        <div class = "btn forward" @click="${this.rightClick}">
+        ->
         </div>
     </div>
 
@@ -135,7 +169,10 @@ export class ImageCarousle extends LitElement {
 
   static get properties() {
     return {
-      title: { type: String },
+      image: {type: Array},
+ imageNumber : {type: String},
+ totalImageNumber: {type: String},
+      
     };
   }
 }
