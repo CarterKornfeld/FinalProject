@@ -10,6 +10,7 @@ export class mediaImage extends LitElement {
 
   constructor() {
     super();
+    this.imageURL = "";
   }
 
   static get styles() {
@@ -18,19 +19,31 @@ export class mediaImage extends LitElement {
         display: block;
       }
 
+      .image
+      {
+        width:200px;
+        height:200px;
+        
+      }
+
     `;
   }
 
   render() {
     return html`
-    
+
+      <div class= "imageBorder">
+
+      <img class="image" src = "${this.imageURL}">
+
+      </div>
     
     `;
   }
 
   static get properties() {
     return {
-      
+      imageURL: {type: String}
     };
   }
 }
