@@ -16,8 +16,11 @@ export class ImageCarousle extends LitElement {
   "https://png.pngtree.com/thumb_back/fh260/background/20240407/pngtree-photo-of-nature-image_15708235.jpg",
 "https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
 "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"];
- this.imageNumber = 1;
- this.totalImageNumber = 5;
+ this.imageNumber = 0;
+ this.totalImageNumber = this.image.length;
+ 
+ 
+
   }
 
   static get styles() {
@@ -97,21 +100,21 @@ export class ImageCarousle extends LitElement {
  rightClick()
  {
   console.log("hi")
-  if(this.imageNumber < this.totalImageNumber)
+  if(this.imageNumber < this.totalImageNumber-1)
   this.imageNumber = this.imageNumber+1;
 else
 {
-  this.imageNumber = 1;
+  this.imageNumber = 0;
 }
   this.requestUpdate();
  }
  leftClick()
  {
-  if(this.imageNumber > 1)
+  if(this.imageNumber > 0)
   this.imageNumber = this.imageNumber-1;
 else
 {
-  this.imageNumber = this.totalImageNumber;
+  this.imageNumber = this.totalImageNumber-1;
 }
   this.requestUpdate();
  }
@@ -119,13 +122,26 @@ else
 
 
   render() {
+    let prevIndex = this.imageNumber - 1;
+    let nextIndex = this.imageNumber + 1;
+    if(prevIndex < 0)
+    {
+      prevIndex = (prevIndex + this.image.length) % (this.image.length);
+    }
+    if(nextIndex >= this.totalImageNumber)
+    {
+      nextIndex = (nextIndex) % (this.image.length);
+    }
+
+
+
     return html`
     <div class="backdrop">
 
     <div class="topRow">
   <p>
   <div class="slide-image-number"> 
-    ${this.imageNumber}
+    ${this.imageNumber +1} 
     </div> of
     <div class="total-image-number">
     ${this.totalImageNumber}
@@ -146,7 +162,7 @@ else
 
 
     <div class="slide-image">
-    <img id="pic" src= ${this.image[this.imageNumber-1]} alt = "slide">
+    <img id="pic" src= ${this.image[this.imageNumber]} alt = "slide">
     </div>
 
 
@@ -155,7 +171,9 @@ else
         <-
         </div>
         <div class = "imageThumbNails">
-        [][][][]
+        <img  id="prev" src = "${this.image[prevIndex]}" style=" height:50px; width:50px;">
+        <img  id="curr" src = "${this.image[this.imageNumber]}" style=" height:50px; width:50px;">
+        <img  id="Next" src = "${this.image[nextIndex]}" style=" height:50px; width:50px;">
         </div>
         <div class = "btn forward" @click="${this.rightClick}">
         ->
@@ -172,7 +190,7 @@ else
       image: {type: Array},
  imageNumber : {type: String},
  totalImageNumber: {type: String},
-      
+      images:{type: String}
     };
   }
 }
