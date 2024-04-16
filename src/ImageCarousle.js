@@ -136,7 +136,7 @@ else
 
 
     return html`
-    <div class="backdrop">
+<div class="backdrop">
 
     <div class="topRow">
   <p>
@@ -180,7 +180,7 @@ else
         </div>
     </div>
 
-    </div>
+</div>
     
     `;
   }

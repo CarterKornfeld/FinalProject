@@ -11,6 +11,7 @@ export class mediaImage extends LitElement {
   constructor() {
     super();
     this.imageURL = "";
+    this.image =[];
   }
 
   static get styles() {
