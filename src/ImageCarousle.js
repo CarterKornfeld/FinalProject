@@ -19,7 +19,7 @@ export class ImageCarousle extends LitElement {
  this.imageNumber = 0;
  this.totalImageNumber = this.image.length;
  
- 
+ this.isVis = false;
 
   }
 
@@ -38,6 +38,7 @@ export class ImageCarousle extends LitElement {
         background-color:green;
         color: black;
         position: relative;
+          
           }
 
         .topRow
@@ -118,7 +119,17 @@ else
 }
   this.requestUpdate();
  }
- 
+ isVisi()
+ {
+    if(this.isVis === "true")
+    {
+      return "visible"
+    }
+    else
+    {
+      return "hidden"
+    }
+ }
 
 
   render() {
@@ -136,7 +147,7 @@ else
 
 
     return html`
-<div class="backdrop">
+<div class="backdrop"  >
 
     <div class="topRow">
   <p>
@@ -190,7 +201,8 @@ else
       image: {type: Array},
  imageNumber : {type: String},
  totalImageNumber: {type: String},
-      images:{type: String}
+      images:{type: String},
+      isVis:{type:Boolean}
     };
   }
 }
