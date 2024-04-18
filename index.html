@@ -48,22 +48,21 @@
 
   </div>
 
-  <image-carousle visible = "true" ></image-carousle>
+  <image-carousle  ></image-carousle>
   
   <script>
     
 
-    const openGall = new Event('openDiolag', 
-    {
-      bubbles: true,
-
-})
+   
 
 image = document.querySelectorAll('media-image');
 image.forEach(element => {
   element.addEventListener('click', (event) =>{
-    document.querySelector('openDiolag');
-    console.log("hi")
+    if(document.getElementsByTagName("image-carousle"))
+    {
+      document.getElementsByTagName("image-carousle")
+    }
+    
   } );
 });
 

@@ -18,11 +18,12 @@ export class ImageCarousle extends LitElement {
 "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"];
  this.imageNumber = 0;
  this.totalImageNumber = this.image.length;
- this.visible= true;
+ this.visible= false;
 
   }
 
-  static get styles() {
+  static get styles() 
+  {
     return css`
       :host {
         display: block;
@@ -90,7 +91,7 @@ export class ImageCarousle extends LitElement {
             height: 250px;
             
         }
-
+      }
     `;
   }
 
@@ -184,9 +185,16 @@ else
   
   `
  }
+ closedView()
+ {
+  html`
+  
+  `
+ }
 
-  render() {
-    return (this.visible) ? this.openDialoge() :"";
+  render() 
+  {
+    return (this.visible) ? this.openDialoge() : this.closedView() ;
   }
 
   static get properties() {
@@ -195,7 +203,7 @@ else
  imageNumber : {type: String},
  totalImageNumber: {type: String},
       images:{type: String},
-      visible:{type:Boolean}
+      visible:{type: Boolean}
     };
   }
 }
