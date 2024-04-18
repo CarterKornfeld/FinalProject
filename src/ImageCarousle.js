@@ -11,14 +11,10 @@ export class ImageCarousle extends LitElement {
   constructor() {
     super();
     
-  this.image = ["https://buffer.com/library/content/images/size/w1200/2023/10/free-images.jpg",
-   "https://images.ctfassets.net/hrltx12pl8hq/a2hkMAaruSQ8haQZ4rBL9/8ff4a6f289b9ca3f4e6474f29793a74a/nature-image-for-website.jpg?fit=fill&w=600&h=400",
-  "https://png.pngtree.com/thumb_back/fh260/background/20240407/pngtree-photo-of-nature-image_15708235.jpg",
-"https://media.istockphoto.com/id/1322277517/photo/wild-grass-in-the-mountains-at-sunset.jpg?s=612x612&w=0&k=20&c=6mItwwFFGqKNKEAzv0mv6TaxhLN3zSE43bWmFN--J5w=",
-"https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"];
+  this.imageList = [];
  this.imageNumber = 0;
- this.totalImageNumber = this.image.length;
- this.visible= false;
+ this.totalImageNumber = this.imageList.length;
+ this.visible = false;
 
   }
 
@@ -26,8 +22,15 @@ export class ImageCarousle extends LitElement {
   {
     return css`
       :host {
-        display: block;
+        position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Higher z-index to make it appear on top */
       }
+
+      
 
       .backdrop
       {
@@ -38,7 +41,8 @@ export class ImageCarousle extends LitElement {
         background-color:green;
         color: black;
         position: relative;
-        
+
+      }
 
         .topRow
           {
@@ -53,7 +57,8 @@ export class ImageCarousle extends LitElement {
         margin: 8px;
         
         display: flex;
-        justify-content: right
+        justify-content: right;
+        visibility: visible;
         }
         .description
         {
@@ -68,6 +73,7 @@ export class ImageCarousle extends LitElement {
   max-height: 400px;
   padding: 10px;
   margin: 0 auto;
+
 }
 
 
@@ -91,16 +97,42 @@ export class ImageCarousle extends LitElement {
             height: 250px;
             
         }
-      }
+      
     `;
   }
 
+  firstUpdated()
+  {
+    document.addEventListener('image-clicked', (e) => {
+      
 
+      var url = e.target.attributes.imageurl.nodeValue;
+      this.imageNumber = this.imageList.indexOf(url);
+      
+      if(this.visible == false)
+      {
+        this.visible =true;
+      }
+
+    })
+
+    var data = document.querySelectorAll('media-image');
+    data.forEach(element => {
+      console.log(element.getAttribute("imageurl"))
+      this.imageList.push(element.getAttribute("imageurl"))
+    });
+  
+    this.requestUpdate();
+  }
+
+  exitClick()
+  {
+    this.visible = !this.visible
+  }
 
  rightClick()
  {
-  console.log("hi")
-  if(this.imageNumber < this.totalImageNumber-1)
+  if(this.imageNumber < this.imageList.length -1)
   this.imageNumber = this.imageNumber+1;
 else
 {
@@ -114,7 +146,7 @@ else
   this.imageNumber = this.imageNumber-1;
 else
 {
-  this.imageNumber = this.totalImageNumber-1;
+  this.imageNumber = this.imageList.length -1;
 }
   this.requestUpdate();
  }
@@ -129,15 +161,15 @@ else
     let nextIndex = this.imageNumber + 1;
     if(prevIndex < 0)
     {
-      prevIndex = (prevIndex + this.image.length) % (this.image.length);
+      prevIndex = (prevIndex + this.imageList.length) % (this.imageList.length);
     }
     if(nextIndex >= this.totalImageNumber)
     {
-      nextIndex = (nextIndex) % (this.image.length);
+      nextIndex = (nextIndex) % (this.imageList.length);
     }
   return html`
   
-  <div class="backdrop"  >
+  <div class="backdrop"   >
 
     <div class="topRow">
   <p>
@@ -145,7 +177,7 @@ else
     ${this.imageNumber +1} 
     </div> of
     <div class="total-image-number">
-    ${this.totalImageNumber}
+    ${this.imageList.length}
     </div>
   </p>
     
@@ -154,7 +186,7 @@ else
     Cool Pic
     </div>
 
-    <div class="closeButton">
+    <div class="closeButton" @click = ${this.exitClick}>
     X
 </div>
 
@@ -163,7 +195,7 @@ else
 
 
     <div class="slide-image">
-    <img id="pic" src= ${this.image[this.imageNumber]} alt = "slide">
+    <img id="pic" src= ${this.imageList[this.imageNumber]} alt = "slide">
     </div>
 
 
@@ -172,9 +204,9 @@ else
         <-
         </div>
         <div class = "imageThumbNails">
-        <img  id="prev" src = "${this.image[prevIndex]}" style=" height:50px; width:50px;">
-        <img  id="curr" src = "${this.image[this.imageNumber]}" style=" height:50px; width:50px;">
-        <img  id="Next" src = "${this.image[nextIndex]}" style=" height:50px; width:50px;">
+        <img  id="prev" src = "${this.imageList[prevIndex]}" style=" height:50px; width:50px;">
+        <img  id="curr" src = "${this.imageList[this.imageNumber]}" style=" height:50px; width:50px;">
+        <img  id="Next" src = "${this.imageList[nextIndex]}" style=" height:50px; width:50px;">
         </div>
         <div class = "btn forward" @click="${this.rightClick}">
         ->
@@ -194,7 +226,16 @@ else
 
   render() 
   {
-    return (this.visible) ? this.openDialoge() : this.closedView() ;
+   
+     if(this.visible == true)
+     {
+      return this.openDialoge();
+     }
+     else
+     {
+      return this.closedView();
+     }
+     
   }
 
   static get properties() {

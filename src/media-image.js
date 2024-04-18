@@ -30,15 +30,28 @@ export class mediaImage extends LitElement {
     `;
   }
 
-  
+  imageClicked()
+  {
+    console.log('Image clicked')
+    const evt = new CustomEvent("image-clicked", {
+      bubbles: true,
+      composed: true,
+      cancelable: true,
+      detail: {
+      opened: true,
+      invokedBy: this.invokedBy,
+      },
+      });
+      this.dispatchEvent(evt);
+  }
 
 
   render() {
     return html`
 
-      <div class= "imageBorder">
+      <div class= "imageBorder" @click = "${this.imageClicked}">
 
-      <img class="image" src = "${this.imageURL}">
+      <img class="image"  src = "${this.imageURL}">
 
       </div>
     
