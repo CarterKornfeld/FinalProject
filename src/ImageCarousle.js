@@ -18,8 +18,7 @@ export class ImageCarousle extends LitElement {
 "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"];
  this.imageNumber = 0;
  this.totalImageNumber = this.image.length;
- 
- this.isVis = false;
+ this.visible= true;
 
   }
 
@@ -38,8 +37,7 @@ export class ImageCarousle extends LitElement {
         background-color:green;
         color: black;
         position: relative;
-          
-          }
+        
 
         .topRow
           {
@@ -119,21 +117,14 @@ else
 }
   this.requestUpdate();
  }
- isVisi()
+ openGall()
  {
-    if(this.isVis === "true")
-    {
-      return "visible"
-    }
-    else
-    {
-      return "hidden"
-    }
+  this.visible = !this.visible;
  }
 
-
-  render() {
-    let prevIndex = this.imageNumber - 1;
+ openDialoge()
+ {
+  let prevIndex = this.imageNumber - 1;
     let nextIndex = this.imageNumber + 1;
     if(prevIndex < 0)
     {
@@ -143,11 +134,9 @@ else
     {
       nextIndex = (nextIndex) % (this.image.length);
     }
-
-
-
-    return html`
-<div class="backdrop"  >
+  return html`
+  
+  <div class="backdrop"  >
 
     <div class="topRow">
   <p>
@@ -192,8 +181,12 @@ else
     </div>
 
 </div>
-    
-    `;
+  
+  `
+ }
+
+  render() {
+    return (this.visible) ? this.openDialoge() :"";
   }
 
   static get properties() {
@@ -202,7 +195,7 @@ else
  imageNumber : {type: String},
  totalImageNumber: {type: String},
       images:{type: String},
-      isVis:{type:Boolean}
+      visible:{type:Boolean}
     };
   }
 }

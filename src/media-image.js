@@ -30,6 +30,9 @@ export class mediaImage extends LitElement {
     `;
   }
 
+  
+
+
   render() {
     return html`
 
@@ -39,6 +42,8 @@ export class mediaImage extends LitElement {
 
       </div>
     
+      
+
     `;
   }
 
