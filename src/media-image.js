@@ -1,8 +1,9 @@
 
 import { LitElement, html, css } from 'lit';
+import { DDD } from "@lrnwebcomponents/d-d-d/d-d-d.js";
 
 
-export class mediaImage extends LitElement {
+export class mediaImage extends DDD {
 
   static get tag() {
     return 'media-image';
@@ -11,7 +12,9 @@ export class mediaImage extends LitElement {
   constructor() {
     super();
     this.imageURL = "";
-    this.image =[];
+    this.captions="";
+    this.description = "";
+        
   }
 
   static get styles() {
@@ -19,14 +22,38 @@ export class mediaImage extends LitElement {
       :host {
         display: block;
       }
+      .wrapper-1 {
+                margin: var(--ddd-spacing-5);
+                display: flex;
+                align-items: center;
+                grid-template-columns: 1fr 1fr 1fr;
+                column-gap: var(--ddd-spacing-5);
+                font-size: var(--ddd-spacing-4);
+            }
+      .captions {
+                margin-top: var(--ddd-spacing-3);
+                font-size: var(--ddd-spacing-4);
+            }
+      .pictures {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
 
-      .image
-      {
-        width:200px;
-        height:200px;
-        
-      }
-
+      .pictures img {
+                width: 200px;
+                height: 200px;
+                border: 2px solid black;
+                border-radius: var(--ddd-radius-md);
+                transition: transform 0.3s ease-in;
+            }
+      .pictures img:hover {
+                cursor: pointer;
+                transform: translate(8px, -8px);
+                box-shadow: -8px 8px black
+            }
     `;
   }
 
@@ -49,20 +76,25 @@ export class mediaImage extends LitElement {
   render() {
     return html`
 
-      <div class= "imageBorder" @click = "${this.imageClicked}">
+    <div class = "media-image-wrapper">
+      <div class = "wrapper-1">
+      <div class= "pictures" @click = "${this.imageClicked}">
 
       <img class="image"  src = "${this.imageURL}">
-
+      <div class="captions">${this.captions}</div>
       </div>
-    
-      
+  </div>
+      </div>
 
     `;
   }
 
   static get properties() {
     return {
-      imageURL: {type: String}
+      imageURL: {type: String},
+            captions: { type: String, attribute: 'captions' },
+            description: {type: String},
+            
     };
   }
 }

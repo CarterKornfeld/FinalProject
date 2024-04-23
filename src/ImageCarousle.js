@@ -1,8 +1,8 @@
 
 import { LitElement, html, css } from 'lit';
+import { DDD } from "@lrnwebcomponents/d-d-d/d-d-d.js";
 
-
-export class ImageCarousle extends LitElement {
+export class ImageCarousle extends DDD {
 
   static get tag() {
     return 'image-carousle';
@@ -12,6 +12,8 @@ export class ImageCarousle extends LitElement {
     super();
     
   this.imageList = [];
+  this.captionsArray=[];
+    this.descriptionsArray=[];
  this.imageNumber = 0;
  this.totalImageNumber = this.imageList.length;
  this.visible = false;
@@ -22,30 +24,39 @@ export class ImageCarousle extends LitElement {
   {
     return css`
       :host {
-        position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1; /* Higher z-index to make it appear on top */
+        display: block;/* Higher z-index to make it appear on top */
       }
 
       
 
       .backdrop
       {
-        margin: 8px;
-        padding: 8px;
-        width:500px;
-        height:500px;
-        background-color:green;
-        color: black;
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); /* Black with 70% opacity */
+        z-index: 1000; /* Ensure it's above other content */
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
       }
 
+      .opened-wrapper {
+        margin: var(--ddd-spacing-2);
+        padding: var(--ddd-spacing-2);
+        
+        background-color: var(--ddd-theme-default-skyLight);
+        color: black;
+        border: 2px solid black;
+        border-radius: var(--ddd-radius-md);
+        overflow: auto;
+      }
         .topRow
           {
+            margin-top: 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -54,6 +65,7 @@ export class ImageCarousle extends LitElement {
         
         .closeButton
         {
+          cursor: pointer;
         margin: 8px;
         
         display: flex;
@@ -68,9 +80,9 @@ export class ImageCarousle extends LitElement {
         }
         .slide-image {
   width: 100%;
-  min-height: 200px;
+  min-height: 100%;
   height: auto;
-  max-height: 400px;
+ 
   padding: 10px;
   margin: 0 auto;
 
@@ -79,24 +91,34 @@ export class ImageCarousle extends LitElement {
 
         .imageLoop
         {
-            margin: 8px;
-            display: flex;
+          margin-left: 4px;
+           margin-top: 32px;
+            display: inline-flex;
             justify-content: space-between;  
-            position: absolute;
+          
            bottom: 0;
            width: 95%;
         }
       
-        #pic
-        {
-            position: absolute;
-            
-            left: 25%;
-            top: 15%;
-            width: 250px;
-            height: 250px;
-            
-        }
+        .slide-image img {
+        
+        
+        
+        width: 550px;
+        height: 550px;
+        display: block;
+        border: 2px solid black;
+        border-radius: var(--ddd-radius-md);
+      }
+      .btn-backwards
+      {
+        cursor: pointer;
+      }
+      .btn-forward
+      {
+        cursor: pointer;
+      }
+      
       
     `;
   }
@@ -120,6 +142,8 @@ export class ImageCarousle extends LitElement {
     data.forEach(element => {
       console.log(element.getAttribute("imageurl"))
       this.imageList.push(element.getAttribute("imageurl"))
+      this.captionsArray.push(element.getAttribute('captions'));
+      this.descriptionsArray.push(element.getAttribute('description'));
     });
   
     this.requestUpdate();
@@ -170,21 +194,17 @@ else
   return html`
   
   <div class="backdrop"   >
-
+  <div class = "opened-wrapper">
     <div class="topRow">
-  <p>
-  <div class="slide-image-number"> 
+    <p><div class="slide-image-number"> 
     ${this.imageNumber +1} 
     </div> of
     <div class="total-image-number">
     ${this.imageList.length}
-    </div>
-  </p>
+    </div></p>
+ 
     
-    
-    <div class="description">
-    Cool Pic
-    </div>
+    <div class="caption">${this.captionsArray[this.imageNumber]}</div>
 
     <div class="closeButton" @click = ${this.exitClick}>
     X
@@ -197,10 +217,10 @@ else
     <div class="slide-image">
     <img id="pic" src= ${this.imageList[this.imageNumber]} alt = "slide">
     </div>
-
+    <div class="description">${this.descriptionsArray[this.imageNumber]}</div>
 
     <div class="imageLoop">
-        <div class="btn backwards" @click="${this.leftClick}">
+        <div class="btn-backwards" @click="${this.leftClick}">
         <-
         </div>
         <div class = "imageThumbNails">
@@ -208,11 +228,11 @@ else
         <img  id="curr" src = "${this.imageList[this.imageNumber]}" style=" height:50px; width:50px;">
         <img  id="Next" src = "${this.imageList[nextIndex]}" style=" height:50px; width:50px;">
         </div>
-        <div class = "btn forward" @click="${this.rightClick}">
+        <div class = "btn-forward" @click="${this.rightClick}">
         ->
         </div>
     </div>
-
+</div>
 </div>
   
   `
@@ -241,6 +261,8 @@ else
   static get properties() {
     return {
       image: {type: Array},
+      captionsArray: { type: Array },
+      descriptionsArray: { type: Array },
  imageNumber : {type: String},
  totalImageNumber: {type: String},
       images:{type: String},
